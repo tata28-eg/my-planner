@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+    <title>My Personal Planner</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<!-- Planner Entry Screen -->
+<div class="planner-entry" id="plannerEntry">
+
+  <!-- Loading -->
+  <div class="planner-loading" id="plannerLoading">
+    <div class="loading-leaf">🌿</div>
+    <div class="loading-title">My Planner</div>
+    <div class="loading-line">
+      <span></span>
+    </div>
+  </div>
+
+  <!-- Green Leather Planner -->
+  <div class="planner-cover-screen" id="plannerCoverScreen">
+
+   <button class="planner-book" id="plannerBook" type="button" aria-label="Open planner">
+
+  <div class="book-cover">
+
+    <div class="book-spine"></div>
+
+    <!-- Lock -->
+    <div class="book-lock">
+      <div class="lock-shackle"></div>
+      <div class="lock-body">
+        <span></span>
+      </div>
+    </div>
+
+    <!-- Cover decoration -->
+    <div class="book-decoration">✦</div>
+
+    <div class="book-title">
+      <small>MY</small>
+      <strong>PLANNER</strong>
+    </div>
+
+    <div class="book-subtitle">
+      my little space
+    </div>
+
+    <div class="book-corner top-left"></div>
+    <div class="book-corner top-right"></div>
+    <div class="book-corner bottom-left"></div>
+    <div class="book-corner bottom-right"></div>
+
+  </div>
+
+</button>
+
+    <div class="tap-text">tap to open</div>
+  </div>
+</div>
+
+<style>
+/* ==============================
+   PLANNER ENTRY SCREEN
+   ============================== */
+
+.planner-entry {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #edf4ed;
+  overflow: hidden;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.planner-loading,
+.planner-cover-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 100002;
+}
+
+/* Loading */
+
+.planner-loading {
+  background: #edf4ed;
+  transition: opacity .7s ease, visibility .7s ease;
+}
+
+.loading-leaf {
+  font-size: 42px;
+  margin-bottom: 12px;
+  animation: leafFloat 1.4s ease-in-out infinite;
+}
+
+.loading-title {
+  color: #315b45;
+  font-size: 27px;
+  letter-spacing: 4px;
+  margin-bottom: 22px;
+}
+
+.loading-line {
+  width: 125px;
+  height: 3px;
+  background: #d5e2d5;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.loading-line span {
+  display: block;
+  width: 45%;
+  height: 100%;
+  background: #71977b;
+  border-radius: 20px;
+  animation: loadingBar 1.5s ease-in-out infinite;
+}
+
+@keyframes leafFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes loadingBar {
+  0% {
+    transform: translateX(-120%);
+  }
+
+  100% {
+    transform: translateX(330%);
+  }
+}
+/* ===== Soft Cloud Transition ===== */
+
+.cloud-transition {
+  position: fixed;
+  inset: 0;
+  z-index:100001;
+  pointer-events: none;
+  overflow: hidden;
+  background: #edf4ed;
+}
+
+.cloud {
+  position: absolute;
+  width: 55vw;
+  height: 55vw;
+  max-width: 600px;
+  max-height: 600px;
+  border-radius: 50%;
+  background: #f7faf5;
+  filter: blur(2px);
+}
+
+.cloud::before,
+.cloud::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: #f7faf5;
+}
+
+.cloud::before {
+  width: 65%;
+  height: 65%;
+  left: 20%;
+  top: -25%;
+}
+
+.cloud::after {
+  width: 55%;
+  height: 55%;
+  right: -10%;
+  top: 15%;
+}
+
+/* چپ */
+.cloud-left {
+  left: -28%;
+  top: 15%;
+}
+
+.cloud-left-small {
+  left: -18%;
+  bottom: 8%;
+  transform: scale(.65);
+}
+
+/* راست */
+.cloud-right {
+  right: -28%;
+  top: 18%;
+}
+
+.cloud-right-small {
+  right: -18%;
+  bottom: 5%;
+  transform: scale(.65);
+  /* Cloud reveal animation */
+
+..cloud-transition {
+  animation: cloudExit 1.8s ease 2s forwards;
+}
+
+.cloud-left {
+  animation: moveCloudLeft 1.8s ease 2s forwards;
+}
+
+.cloud-left-small {
+  animation: moveCloudLeftSmall 1.8s ease 2s forwards;
+}
+
+.cloud-right {
+  animation: moveCloudRight 1.8s ease 2s forwards;
+}
+
+.cloud-right-small {
+  animation: moveCloudRightSmall 1.8s ease 2s forwards;
+}
+
+@keyframes moveCloudLeft {
+  to {
+    transform: translateX(-120%);
+  }
+}
+
+@keyframes moveCloudLeftSmall {
+  to {
+    transform: translateX(-140%) scale(.65);
+  }
+}
+
+@keyframes moveCloudRight {
+  to {
+    transform: translateX(120%);
+  }
+}
+
+@keyframes moveCloudRightSmall {
+  to {
+    transform: translateX(140%) scale(.65);
+  }
+}
+
+@keyframes cloudExit {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+}
+/* Cover */
+
+.planner-cover-screen {
+  opacity: 0;
+  point-events:none;
+  visibility: hidden;
+  transition: opacity .8s ease, visibility .8s ease;
+  background:
+    radial-gradient(circle at center, #f5f8f2 0%, #e4eee3 100%);
+}
+
+.planner-book {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  perspective: 1800px;
+  animation: bookAppear 1s ease forwards;
+}
+
+.book-cover {
+  position: relative;
+  width: min(460px, 80vw);
+  aspect-ratio: 0.68;
+  border-radius: 12px 18px 18px 12px;
+transform-style: preserve-3d;
+will-change: transform;
+  background:
+    linear-gradient(
+      105deg,
+      #274b38 0%,
+      #3e7052 28%,
+      #315d43 55%,
+      #244833 100%
+    );
+
+  box-shadow:
+    10px 16px 28px rgba(31, 57, 39, .28),
+    inset 4px 0 0 rgba(255,255,255,.08),
+    inset -5px 0 0 rgba(0,0,0,.12);
+
+ 
+   transform: rotateY(-5deg);
+ transform-origin: left center;
+transform-style: preserve-3d;
+backface-visibility: hidden;
+   transition:
+    transform .7s ease,
+    box-shadow .7s ease;
+}
+
+.book-cover::after {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(224, 204, 145, .55);
+  border-radius: 7px 12px 12px 7px;
+  pointer-events: none;
+transform: translateZ(2px);
+}
+
+.book-spine {
+  position: absolute;
+  left: 12px;
+  top: 0;
+  bottom: 0;
+  width: 12px;
+  border-right: 1px solid rgba(231, 211, 157, .35);
+  background: linear-gradient(
+    90deg,
+    rgba(0,0,0,.16),
+    transparent
+  );
+}
+
+.book-decoration {
+  position: absolute;
+  top: 27%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #d9c68e;
+  font-size: 25px;
+}
+
+.book-title {
+  position: absolute;
+  top: 38%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #eadcae;
+  letter-spacing: 4px;
+}
+
+.book-title small {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 5px;
+  margin-bottom: 8px;
+}
+
+.book-title strong {
+  display: block;
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.book-subtitle {
+  position: absolute;
+  bottom: 18%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: rgba(236, 223, 179, .82);
+  font-size: 13px;
+  font-style: italic;
+  letter-spacing: 1px;
+}
+
+.book-corner {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  border-color: rgba(221, 199, 135, .65);
+}
+
+.top-left {
+  top: 22px;
+  left: 24px;
+  border-top: 1px solid;
+  border-left: 1px solid;
+}
+
+.top-right {
+  top: 22px;
+  right: 24px;
+  border-top: 1px solid;
+  border-right: 1px solid;
+}
+
+.bottom-left {
+  bottom: 22px;
+  left: 24px;
+  border-bottom: 1px solid;
+  border-left: 1px solid;
+}
+
+.bottom-right {
+  bottom: 22px;
+  right: 24px;
+  border-bottom: 1px solid;
+  border-right: 1px solid;
+}
+
+.planner-book:hover .book-cover {
+  transform: rotateY(0deg) translateY(-7px) scale(1.02);
+  box-shadow:
+    12px 22px 35px rgba(31, 57, 39, .32),
+    inset 4px 0 0 rgba(255,255,255,.08),
+    inset -5px 0 0 rgba(0,0,0,.12);
+}
+
+.tap-text {
+  margin-top: 28px;
+  color: #55725c;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: .75;
+}
+
+@keyframes bookAppear {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(.94);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+/* ===== Planner Lock ===== */
+
+.book-lock {
+  position: absolute;
+  right: -13px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 34px;
+  height: 58px;
+  z-index: 20;
+  transition: transform .45s ease, opacity .45s ease;
+}
+
+.lock-body {
+  position: absolute;
+  bottom: 0;
+  left: 3px;
+  width: 28px;
+  height: 31px;
+  border-radius: 5px;
+  background: linear-gradient(145deg, #e0c77d, #b99b51);
+  border: 1px solid #8f753b;
+  box-shadow:
+    2px 3px 6px rgba(0,0,0,.25),
+    inset 1px 1px 2px rgba(255,255,255,.45);
+}
+
+.lock-body span {
+  position: absolute;
+  width: 6px;
+  height: 9px;
+  background: #6f5b30;
+  border-radius: 50%;
+  left: 50%;
+  top: 10px;
+  transform: translateX(-50%);
+}
+
+.lock-shackle {
+  position: absolute;
+  width: 17px;
+  height: 22px;
+  border: 4px solid #c8ad68;
+  border-bottom: 0;
+  border-radius: 12px 12px 0 0;
+  left: 8px;
+  top: 0;
+  transform-origin: right bottom;
+  transition: transform .45s ease;
+}
+
+/* وقتی دفتر باز می‌شود، قفل آزاد می‌شود */
+
+.planner-entry.opening .lock-shackle {
+  transform: rotate(32deg);
+}
+
+.planner-entry.opening .book-lock {
+  transform: translate(20px, -50%) rotate(8deg);
+  opacity: 0;
+}
+/* Opening animation */
+
+.planner-entry.opening .book-cover {
+  animation: bookOpen .8s ease forwards;
+}
+
+@keyframes bookOpen {
+  0% {
+    transform: rotateY(-5deg) scale(1);
+    opacity: 1;
+  }
+
+  15% {
+    transform: rotateY(-25deg) scale(1.01);
+  }
+
+  35% {
+    transform: rotateY(-60deg) scale(1.015);
+  }
+
+  55% {
+    transform: rotateY(-100deg) scale(1.02);
+  }
+
+  75% {
+    transform: rotateY(-135deg) scale(1.015);
+  }
+
+  90% {
+    transform: rotateY(-165deg) scale(1.005);
+  }
+
+  100% {
+    transform: rotateY(-180deg) scale(1);
+    opacity: 0;
+  }
+}
+
+.planner-entry.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .8s ease, visibility .8s ease;
+}
+</style>
+
+<script>
+(function () {
+  const entry = document.getElementById("plannerEntry");
+  const loading = document.getElementById("plannerLoading");
+  const coverScreen = document.getElementById("plannerCoverScreen");
+  const book = document.getElementById("plannerBook");
+
+  if (!entry || !loading || !coverScreen || !book) return;
+
+ // Loading → Soft Cloud Reveal
+setTimeout(() => {
+  loading.style.opacity = "0";
+  loading.style.visibility = "hidden";
+
+  entry.classList.add("hide");
+}, 1800);
+
+  // Open planner
+  book.addEventListener("click", () => {
+    entry.classList.add("opening");
+
+    setTimeout(() => {
+      entry.classList.add("hide");
+    }, 750);
+  });
+})();
+</script>
+<div class="app">
+
+    <header class="topbar">
+
+        <div>
+            <div class="eyebrow">MY PERSONAL PLANNER ✨</div>
+            <h1>My Planner</h1>
+            <p id="pretty-date"></p>
+        </div>
+
+        <div class="today-progress">
+            <span>Today's progress</span>
+            <strong id="header-progress">0%</strong>
+        </div>
+
+    </header>
+
+
+    <section class="date-card">
+
+        <button id="previous-day" class="date-arrow">‹</button>
+
+      <div class="date-center">
+
+  <div class="calendar-sheet">
+
+   <div id="calendar-month" class="calendar-month">OCTOBER</div>
+
+<div id="calendar-number" class="calendar-number">01</div>
+
+    <div class="calendar-weekday">
+      <span id="weekday">پنجشنبه</span>
+      <span class="weekday-divider">•</span>
+      <span id="english-weekday">thursday</span>
+
+    <div class="calendar-divider"></div>
+
+    <div class="calendar-dates">
+
+      <div id="persian-date" class="persian-date">
+        ۱۴۰۵/۰۷/۰۹
+      </div>
+
+      <div id="gregorian-date" class="gregorian-date">
+        October 1, 2026
+      </div>
+
+    </div>
+
+    <input type="date" id="date-picker">
+
+    <button id="today-button" class="today-button">
+      Today
+    </button>
+
+  </div>
+
+</div>
+        <button id="next-day" class="date-arrow next-arrow">›</button>
+
+    </section>
+
+
+    <section class="note-card">
+
+        <div class="note-icon">📝</div>
+
+        <div class="note-content">
+
+            <strong>Today's note</strong>
+
+            <textarea
+                id="daily-note"
+                placeholder="Write something about your day..."
+            ></textarea>
+
+        </div>
+
+    </section>
+
+
+    <main>
+
+        <div id="categories-container"></div>
+
+
+        <button
+            id="add-category"
+            class="add-category-button"
+        >
+            <span class="big-plus">＋</span>
+
+            <span>
+                <strong>Add category</strong>
+                <small>Create a new list of activities</small>
+            </span>
+        </button>
+
+
+        <section class="stats-card">
+
+            <div class="section-heading">
+
+                <div>
+                    <span class="eyebrow">TODAY</span>
+                    <h2>Daily Progress</h2>
+                </div>
+
+                <strong id="daily-percentage">0%</strong>
+
+            </div>
+
+            <div class="progress-track">
+                <div id="daily-progress-fill"></div>
+            </div>
+
+            <p id="daily-progress-text">
+                0 of 0 tasks completed
+            </p>
+
+        </section>
+
+
+        <section class="stats-card">
+
+            <div class="section-heading">
+
+                <div>
+                    <span class="eyebrow">THIS WEEK</span>
+                    <h2>Weekly Progress</h2>
+                </div>
+
+            </div>
+
+            <div id="weekly-chart" class="weekly-chart"></div>
+
+            <div id="weekly-summary" class="summary-text"></div>
+
+        </section>
+
+
+        <section class="stats-card">
+
+            <div class="section-heading">
+
+                <div>
+                    <span class="eyebrow">THIS MONTH</span>
+                    <h2>Monthly Progress</h2>
+                </div>
+
+            </div>
+
+            <div id="monthly-chart" class="monthly-chart"></div>
+
+            <div id="monthly-summary" class="summary-text"></div>
+
+        </section>
+
+
+        <section class="stats-card">
+
+            <div class="section-heading">
+
+                <div>
+                    <span class="eyebrow">ANALYSIS</span>
+                    <h2>Activity Overview</h2>
+                </div>
+
+            </div>
+
+            <div id="activity-analysis"></div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- ========================= -->
+<!-- TASK MODAL -->
+<!-- ========================= -->
+
+<div id="task-modal" class="modal-overlay">
+
+    <div class="modal">
+
+        <button
+            id="close-task-modal"
+            class="modal-close"
+        >×</button>
+
+        <div class="modal-icon">✨</div>
+
+        <h2>Add new task</h2>
+
+        <p class="modal-subtitle">
+            Add something you want to accomplish.
+        </p>
+
+        <label>Task name</label>
+
+        <input
+            id="task-name-input"
+            class="modal-input"
+            type="text"
+            placeholder="e.g. Read 20 pages"
+        >
+
+        <label>Choose an icon</label>
+
+        <div
+            id="task-emoji-picker"
+            class="emoji-picker"
+        ></div>
+
+        <div class="custom-emoji-row">
+
+            <input
+                id="task-icon-input"
+                class="modal-input icon-input"
+                type="text"
+                value="✨"
+                maxlength="4"
+                placeholder="✨"
+            >
+
+        </div>
+
+        <div class="modal-actions">
+
+            <button
+                id="cancel-task-modal"
+                class="modal-cancel"
+            >
+                Cancel
+            </button>
+
+            <button
+                id="save-task-modal"
+                class="modal-save"
+            >
+                Add task
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ========================= -->
+<!-- CATEGORY MODAL -->
+<!-- ========================= -->
+
+<div id="category-modal" class="modal-overlay">
+
+    <div class="modal">
+
+        <button
+            id="close-category-modal"
+            class="modal-close"
+        >×</button>
+
+        <div class="modal-icon">🗂️</div>
+
+        <h2>Add new category</h2>
+
+        <p class="modal-subtitle">
+            Create a new list for your activities.
+        </p>
+
+        <label>Category name</label>
+
+        <input
+            id="category-name-input"
+            class="modal-input"
+            type="text"
+            placeholder="e.g. University"
+        >
+
+        <label>Choose an icon</label>
+
+        <div
+            id="category-emoji-picker"
+            class="emoji-picker"
+        ></div>
+
+        <div class="custom-emoji-row">
+
+            <input
+                id="category-icon-input"
+                class="modal-input icon-input"
+                type="text"
+                value="✨"
+                maxlength="4"
+                placeholder="✨"
+            >
+
+        </div>
+
+        <div class="modal-actions">
+
+            <button
+                id="cancel-category-modal"
+                class="modal-cancel"
+            >
+                Cancel
+            </button>
+
+            <button
+                id="save-category-modal"
+                class="modal-save"
+            >
+                Add category
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ========================= -->
+<!-- EMOJI EDIT MODAL -->
+<!-- ========================= -->
+
+<div id="emoji-edit-modal" class="modal-overlay">
+
+    <div class="modal emoji-edit-modal">
+
+        <button
+            id="close-emoji-edit-modal"
+            class="modal-close"
+        >×</button>
+
+        <div class="modal-icon">🎀</div>
+
+        <h2>Choose an icon</h2>
+
+        <p
+            id="emoji-edit-subtitle"
+            class="modal-subtitle"
+        >
+            Pick an emoji for this item.
+        </p>
+
+        <div
+            id="edit-emoji-picker"
+            class="emoji-picker large"
+        ></div>
+
+        <label>Or type your own</label>
+
+        <input
+            id="edit-custom-emoji"
+            class="modal-input icon-input"
+            type="text"
+            maxlength="4"
+            placeholder="✨"
+        >
+
+        <div class="modal-actions">
+
+            <button
+                id="cancel-emoji-edit"
+                class="modal-cancel"
+            >
+                Cancel
+            </button>
+
+            <button
+                id="save-emoji-edit"
+                class="modal-save"
+            >
+                Save icon
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
